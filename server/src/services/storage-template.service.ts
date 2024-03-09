@@ -226,7 +226,7 @@ export class StorageTemplateService extends BaseService {
       const filenameWithoutExtension = path.basename(filename, path.extname(filename));
 
       const source = asset.originalPath;
-      let extension = path.extname(source).split('.').pop() as string;
+      let extension = path.extname(source).split('.').pop()?.toLowerCase() as string;
       const sanitized = sanitize(path.basename(filenameWithoutExtension, `.${extension}`));
       extension = extension?.toLowerCase();
       const rootPath = StorageCore.getLibraryFolder({ id: asset.ownerId, storageLabel });
