@@ -37,7 +37,7 @@ export class DownloadService {
     for await (const assets of assetPagination) {
       // motion part of live photos
       const motionIds = assets.map((asset) => asset.livePhotoVideoId).filter((id): id is string => !!id);
-      if (motionIds.length > 0) {
+      if (false && motionIds.length > 0) {
         const motionAssets = await this.assetRepository.getByIds(motionIds, { exifInfo: true });
         for (const motionAsset of motionAssets) {
           if (
