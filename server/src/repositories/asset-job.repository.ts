@@ -383,14 +383,15 @@ export class AssetJobRepository {
         'asset.originalFileName',
         'asset.livePhotoVideoId',
         'asset.fileCreatedAt',
+        'asset.visibility',
+        'asset.deletedAt',
         'asset_exif.timeZone',
         'asset_exif.fileSizeInByte',
         'asset_exif.make',
         'asset_exif.model',
         'asset_exif.lensModel',
       ])
-      .select((eb) => withFiles(eb, AssetFileType.Sidecar))
-      .where('asset.deletedAt', 'is', null);
+      .select((eb) => withFiles(eb, AssetFileType.Sidecar));
   }
 
   @GenerateSql({ params: [DummyValue.UUID] })

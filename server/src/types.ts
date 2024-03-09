@@ -11,6 +11,7 @@ import {
   AacProfile,
   AssetOrder,
   AssetType,
+  AssetVisibility,
   Av1Profile,
   ColorMatrix,
   ColorPrimaries,
@@ -538,6 +539,8 @@ export type StorageAsset = {
   originalPath: string;
   originalFileName: string;
   fileSizeInByte: number | null;
+  visibility: AssetVisibility;
+  deletedAt: Date | null;
   files: AssetFile[];
   make: string | null;
   model: string | null;

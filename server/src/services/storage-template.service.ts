@@ -10,7 +10,7 @@ import {
   AssetFileType,
   AssetPathType,
   AssetType,
-  DatabaseLock,
+  AssetVisibility, DatabaseLock,
   JobName,
   JobStatus,
   QueueName,
@@ -274,6 +274,7 @@ export class StorageTemplateService extends BaseService {
       const sanitized = sanitize(path.basename(filenameWithoutExtension, `.${extension}`));
       extension = extension?.toLowerCase();
       const rootPath = StorageCore.getLibraryFolder({ id: asset.ownerId, storageLabel });
+      const typeDir = this.getAssetTypeDirectory(asset);
 
       switch (extension) {
         case 'jpeg':
@@ -335,7 +336,7 @@ export class StorageTemplateService extends BaseService {
         model: assetForMetadata.model,
         lensModel: assetForMetadata.lensModel,
       });
-      const fullPath = path.normalize(path.join(rootPath, storagePath));
+      const fullPath = path.normalize(path.join(rootPath, typeDir, storagePath));
       let destination = `${fullPath}.${extension}`;
 
       if (!fullPath.startsWith(rootPath)) {
@@ -386,6 +387,16 @@ export class StorageTemplateService extends BaseService {
       this.logger.error(`Unable to get template path for ${filename}: ${error}`);
       return asset.originalPath;
     }
+  }
+
+  private getAssetTypeDirectory(asset: StorageAsset) {
+    if (asset.deletedAt) {
+      return '.trash';
+    }
+    if (asset.visibility === AssetVisibility.Archive) {
+      return '.archive';
+    }
+    return '';
   }
 
   private compile(template: string) {
