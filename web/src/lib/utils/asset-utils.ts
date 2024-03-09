@@ -158,14 +158,14 @@ export const downloadFile = async (asset: AssetResponseDto) => {
     },
   ];
 
-  if (asset.livePhotoVideoId) {
-    const motionAsset = await getAssetInfo({ id: asset.livePhotoVideoId, key: getKey() });
-    assets.push({
-      filename: motionAsset.originalFileName,
-      id: asset.livePhotoVideoId,
-      size: motionAsset.exifInfo?.fileSizeInByte || 0,
-    });
-  }
+  // if (asset.livePhotoVideoId) {
+  //   const motionAsset = await getAssetInfo({ id: asset.livePhotoVideoId, key: getKey() });
+  //   assets.push({
+  //     filename: motionAsset.originalFileName,
+  //     id: asset.livePhotoVideoId,
+  //     size: motionAsset.exifInfo?.fileSizeInByte || 0,
+  //   });
+  // }
 
   for (const { filename, id, size } of assets) {
     const downloadKey = filename;
