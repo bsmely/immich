@@ -118,7 +118,7 @@ export class StorageTemplateService extends BaseService {
       return JobStatus.SKIPPED;
     }
     const assetPagination = usePagination(JOBS_ASSET_PAGINATION_SIZE, (pagination) =>
-      this.assetRepository.getAll(pagination, { withExif: true, withArchived: true }),
+      this.assetRepository.getAll(pagination, { withExif: true, withDeleted: true, withArchived : true}),
     );
     const users = await this.userRepository.getList();
 
@@ -187,6 +187,7 @@ export class StorageTemplateService extends BaseService {
       const extension = path.extname(source).split('.').pop() as string;
       const sanitized = sanitize(path.basename(filename, `.${extension}`));
       const rootPath = StorageCore.getLibraryFolder({ id: asset.ownerId, storageLabel });
+      const typeDir = this.getAssetTypeDirectory(asset);
 
       let albumName = null;
       if (this.template.needsAlbum) {
@@ -200,7 +201,7 @@ export class StorageTemplateService extends BaseService {
         extension,
         albumName,
       });
-      const fullPath = path.normalize(path.join(rootPath, storagePath));
+      const fullPath = path.normalize(path.join(rootPath, typeDir, storagePath));
       let destination = `${fullPath}.${extension}`;
 
       if (!fullPath.startsWith(rootPath)) {
@@ -251,6 +252,16 @@ export class StorageTemplateService extends BaseService {
       this.logger.error(`Unable to get template path for ${filename}`, error);
       return asset.originalPath;
     }
+  }
+
+  private getAssetTypeDirectory(asset: AssetEntity) {
+    if (asset.deletedAt) {
+      return '.trash';
+    }
+    if (asset.isArchived) {
+      return '.archive';
+    }
+    return '';
   }
 
   private compile(template: string) {
