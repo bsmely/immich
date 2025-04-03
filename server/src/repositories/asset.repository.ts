@@ -629,10 +629,12 @@ export class AssetRepository {
         'assets.originalFileName',
         'assets.livePhotoVideoId',
         'assets.fileCreatedAt',
+        'assets.isArchived',
+        'assets.deletedAt',
         'exif.timeZone',
         'exif.fileSizeInByte',
       ])
-      .where('assets.deletedAt', 'is', null)
+      //.where('assets.deletedAt', 'is', null)
       .where('assets.fileCreatedAt', 'is not', null);
   }
 

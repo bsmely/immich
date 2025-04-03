@@ -463,6 +463,8 @@ export type StorageAsset = {
   originalFileName: string;
   sidecarPath: string | null;
   fileSizeInByte: number | null;
+  isArchived: boolean;
+  deletedAt: Date | null;
 };
 
 export type OnThisDayData = { year: number };

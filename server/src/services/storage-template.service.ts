@@ -153,9 +153,6 @@ export class StorageTemplateService extends BaseService {
     await this.moveRepository.cleanMoveHistory();
 
     const assets = this.assetRepository.streamStorageTemplateAssets();
-    //TODO: fix it const assetPagination = usePagination(JOBS_ASSET_PAGINATION_SIZE, (pagination) =>
-    //   this.assetRepository.getAll(pagination, { withExif: true, withDeleted: true, withArchived : true}),
-    //);
     const users = await this.userRepository.getList();
 
     for await (const asset of assets) {
@@ -323,7 +320,7 @@ export class StorageTemplateService extends BaseService {
     }
   }
 
-  private getAssetTypeDirectory(asset: AssetEntity) {
+  private getAssetTypeDirectory(asset: StorageAsset) {
     if (asset.deletedAt) {
       return '.trash';
     }
